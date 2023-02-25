@@ -1,0 +1,90 @@
+package com.TaskExecution;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+
+import org.openqa.selenium.chrome.ChromeDriver;
+
+import org.testng.Assert;
+import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.Test;
+
+public class LoginPage {
+	
+	WebDriver driver=null;
+	
+	@BeforeSuite
+	public void openBrowser() {
+		System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
+		driver=new ChromeDriver();
+		driver.get("https://console.uat.asians.group/#/domain/list\r\n"
+				+ "\r\n"
+				+ " ");
+		driver.manage().window().maximize();
+	}
+	
+	
+	@Test(priority=0)
+	public void newRegister() {
+		driver.findElement(By.xpath("//a[@tabindex=\"6\"]")).click();
+		Assert.assertEquals(driver.getCurrentUrl(), "https://user.asians.group/auth/realms/asians/login-actions/registration?client_id=public&tab_id=qwO6OUCZJEQ");
+	}
+	
+	@Test(priority=1)
+	public void checkHeading_AsiansUserSystem() {
+		String actHeading=driver.findElement(By.xpath("//span[text()='Asians User System']")).getText();
+		String expheading="ASIANS USER SYSTEM";
+		System.out.println(actHeading);
+		Assert.assertEquals(actHeading, expheading);
+	}
+	
+	@Test(priority=2)
+	public void checkHeading_Register() {
+		String actHeading=driver.findElement(By.xpath("//h1[@id='kc-page-title']")).getText();
+		String expheading="Register";
+		System.out.println(actHeading);
+		Assert.assertEquals(actHeading, expheading);
+	}
+	
+	@Test(priority=3)
+	public void checkNewCredentials() {
+		driver.findElement(By.xpath("//input[@id=\"email\"]")).sendKeys("shubhamdadgal34@gmail.com");
+		driver.findElement(By.xpath("//input[@id=\"password\"]")).sendKeys("shubh789");
+		driver.findElement(By.xpath("//input[@id=\"password-confirm\"]")).sendKeys("shubh789");
+		
+		driver.findElement(By.xpath("//input[@type='submit']")).click();
+		
+		Assert.assertEquals(driver.getCurrentUrl(), "https://console.uat.asians.group/#/domain/list");
+	}
+	
+	@Test(priority=4)
+	public void checkLogout() {
+		driver.findElement(By.xpath("//div[@class=\"vue-avatar--wrapper\"]")).click();
+		driver.findElement(By.xpath("//button[text()='Logout']")).click();
+		
+		
+		Assert.assertEquals(driver.getCurrentUrl(), "https://user.asians.group/auth/realms/asians/protocol/openid-connect/auth?client_id=public&redirect_uri=https%3A%2F%2Fconsole.uat.asians.group%2F%23%2Fdomain%2Flist&state=99b3c581-5d67-4f4b-a1cd-b41386bccd1b&response_mode=fragment&response_type=code&scope=openid&nonce=0a9b4755-3399-45ae-9d87-5502a94282c6");
+	}
+	
+	@Test(priority=5)
+	public void checkLoginTab() {
+		String actHeading=driver.findElement(By.xpath("//h1[@id=\"kc-page-title\"]")).getText();
+		String expheading="        Sign in to your account\r\n"
+				+ "";
+		System.out.println(actHeading);
+		Assert.assertEquals(actHeading, expheading);
+		
+	}
+	
+	@Test(priority=6)
+	public void checkValidCredentials() {
+		driver.findElement(By.xpath("//input[@id=\"username\"]")).sendKeys("shubhamdadgal34@gmail.com");
+		driver.findElement(By.xpath("//input[@id=\"password\"]")).sendKeys("shubh789");
+		
+		driver.findElement(By.xpath("//input[@type=\"submit\"]")).click();
+		
+		Assert.assertEquals(driver.getCurrentUrl(), "https://console.uat.asians.group/#/domain/list");
+	}
+	
+
+}
